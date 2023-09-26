@@ -10,11 +10,11 @@
   "authors": [
     {
       "name": "Mehdi Eftekhari",
-      "email": "me.golden2008@gmail.com",
+      "email": "me.golden.work@gmail.com",
       "role": "Developer"
     }
   ],
-  "homepage": "https://github.com/hnmgroup/framework",
+  "homepage": "https://github.com/hnmgroup/hoonam-framework",
   "license": "MIT",
   "require": {
     "php": "^8.2",
@@ -26,7 +26,9 @@
     "phpstan/phpstan": "^1.10"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "archive-dir": "dist",
+    "archive-format": "zip"
   },
   "extra": {
     "laravel": {
@@ -52,9 +54,9 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "support": {
-    "source": "https://github.com/hnmgroup/framework",
-    "docs": "https://github.com/hnmgroup/framework/wiki",
-    "issues": "https://github.com/hnmgroup/framework/issues"
+    "source": "https://github.com/hnmgroup/hoonam-framework",
+    "docs": "https://github.com/hnmgroup/hoonam-framework/wiki",
+    "issues": "https://github.com/hnmgroup/hoonam-framework/issues"
   },
   "archive": {
     "exclude": ["tests", "phpunit.xml"]
