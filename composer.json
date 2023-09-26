@@ -59,6 +59,6 @@
     "issues": "https://github.com/hnmgroup/hoonam-framework/issues"
   },
   "archive": {
-    "exclude": ["tests", "phpunit.xml"]
+    "exclude": ["tests", "dist", "vendor", "phpunit.xml"]
   }
 }
