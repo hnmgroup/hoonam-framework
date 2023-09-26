@@ -1,0 +1,14 @@
+/.phpunit.cache
+/vendor
+.env
+.env.*
+!.env.example
+.phpunit.result.cache
+.phpunit.result.html
+Homestead.json
+Homestead.yaml
+auth.json
+/.fleet
+/.idea
+/.vscode
+dep-graph-*
