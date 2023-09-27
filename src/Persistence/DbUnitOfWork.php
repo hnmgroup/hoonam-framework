@@ -29,6 +29,6 @@ class DbUnitOfWork implements UnitOfWork
     public function commit(): void
     {
         if ($this->_level === 0) DB::commit();
-        $this->_level -= 1;
+        if ($this->_level >= 0) $this->_level -= 1;
     }
 }

@@ -87,6 +87,8 @@ class Core
     {
         if (is_null($value)) return $default;
 
+        if ($key === '') return $value;
+
         if (is_string($key)) {
             $nestedIndex = self::str_pos($key, '.', offset: 1);
             if ($nestedIndex >= 0) return self::getValue(

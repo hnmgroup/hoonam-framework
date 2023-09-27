@@ -90,6 +90,7 @@ class CoreTests extends TestCase
         $this->assertEquals(120, Core::getValue([5 => 120], 5));
         $this->assertEquals(150, Core::getValue(['func' => fn () => 150], 'func()'));
         $this->assertEquals(2, Core::getValue(['root' => ['level2' => [1,2,3]]], 'root.level2.1'));
+        $this->assertEquals('fake', Core::getValue('fake', key: ''));
     }
 
     public function test_clean_works_properly(): void
