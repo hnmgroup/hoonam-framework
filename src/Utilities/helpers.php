@@ -1,11 +1,7 @@
 <?php
 
 use Hoonam\Framework\Domain\ApplicationException;
-use Hoonam\Framework\Utilities\Convert;
-use Hoonam\Framework\Utilities\Core;
-use Hoonam\Framework\Utilities\Math;
-use Hoonam\Framework\Utilities\Str;
-use Hoonam\Framework\Utilities\Web;
+use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json};
 use Illuminate\Support\Facades\Log;
 
 function arrayToMap(array $array, mixed $key = null, string|callable|null $value = null): array
@@ -132,4 +128,14 @@ function logError(Throwable $error): void
 {
     $context = $error instanceof ApplicationException ? $error->context() : [];
     Log::error($error, $context);
+}
+
+function jsonEncode(mixed $value, bool $prettyPrint = false): string
+{
+    return Json::encode($value, $prettyPrint);
+}
+
+function jsonDecode(string $json, ?bool $associative = true): mixed
+{
+    return Json::decode($json, $associative);
 }
