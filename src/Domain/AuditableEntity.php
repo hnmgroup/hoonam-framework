@@ -44,13 +44,10 @@ abstract class AuditableEntity extends Entity
 
     private function resolveUserId(): ?int
     {
-        if (app()->bound(UserIdentity::class)) {
-            /** @type UserIdentity $user */
-            $user = app()->make(UserIdentity::class);
+        /** @type UserIdentity $user */
+        $user = app()->make(UserIdentity::class);
 
-            if ($user->isAuthenticated()) return $user->id();
-        }
-        return null;
+        return $user->isAuthenticated() ? $user->id() : null;
     }
 
     const CREATED_BY = 'created_by';
