@@ -1,7 +1,7 @@
 {
   "name": "hoonam/framework",
   "description": "A framework for better application development.",
-  "version": "1.8.14",
+  "version": "1.9.0",
   "keywords": [
     "hoonam",
     "framework",
@@ -59,6 +59,6 @@
     "issues": "https://github.com/hnmgroup/hoonam-framework/issues"
   },
   "archive": {
-    "exclude": ["tests", "dist", "vendor", "phpunit.xml"]
+    "exclude": ["tests", "dist", "vendor", "*.sh", "phpunit.xml", "phpda.yml"]
   }
 }

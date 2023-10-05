@@ -18,3 +18,5 @@ CONTRIBUTING.md export-ignore
 composer.lock export-ignore
 docker-compose.yml export-ignore
 phpunit.xml export-ignore
+phpda.yml export-ignore
+*.sh export-ignore
