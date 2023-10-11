@@ -2,6 +2,7 @@
 
 use Hoonam\Framework\Domain\ApplicationException;
 use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json};
+use Hoonam\Framework\NotImplementedException;
 use Illuminate\Support\Facades\Log;
 
 function arrayToMap(array $array, mixed $key = null, string|callable|null $value = null): array
@@ -138,4 +139,22 @@ function jsonEncode(mixed $value, bool $prettyPrint = false): string
 function jsonDecode(string $json, ?bool $associative = true): mixed
 {
     return Json::decode($json, $associative);
+}
+
+function arrayDiffByKey(array $array, array $array2, mixed $key): array
+{
+    return Core::arrayDiffByKey($array, $array2, $key);
+}
+
+function arrayIntersectByKey(array $array, array $array2, mixed $key): array
+{
+    return Core::arrayIntersectByKey($array, $array2, $key);
+}
+
+/**
+ * @throws NotImplementedException
+ */
+function notImplemented(?string $message = null): never
+{
+    throw new NotImplementedException($message);
 }

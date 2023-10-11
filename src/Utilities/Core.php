@@ -126,13 +126,26 @@ class Core
         return collect($array)->reject(fn ($item) => isBlank($item))->values()->all();
     }
 
-    public static function arrayDiffByKey(array $array1, array $array2, mixed $key): array
+    public static function arrayDiffByKey(array $array, array $array2, mixed $key): array
     {
         $result = [];
         $array2Coll = collect($array2);
-        foreach ($array1 as $k => $v) {
-            if ($array2Coll->contains(fn ($i) => getValue($i, $key) == $v)) continue;
-            $result[$k] = $v;
+        foreach ($array as $k => $v) {
+            $kv = getValue($v, $key);
+            if ($array2Coll->doesntContain(fn ($i) => getValue($i, $key) == $kv))
+                $result[$k] = $v;
+        }
+        return $result;
+    }
+
+    public static function arrayIntersectByKey(array $array, array $array2, mixed $key): array
+    {
+        $result = [];
+        $array2Coll = collect($array2);
+        foreach ($array as $k => $v) {
+            $kv = getValue($v, $key);
+            if ($array2Coll->contains(fn ($i) => getValue($i, $key) == $kv))
+                $result[$k] = $v;
         }
         return $result;
     }

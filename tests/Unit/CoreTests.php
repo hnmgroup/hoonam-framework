@@ -101,21 +101,30 @@ class CoreTests extends TestCase
 
     public function test_arrayDiffByKey_works_properly(): void
     {
-        // a = 1,2
-        // b = 2,4
-        // updated = a intersect b
-        // new     = b diff a
-        // del     = a diff b
         $this->assertEquals([1,2], Core::arrayDiffByKey([1, 2, 3], [3, 4], key: ''));
-        $this->assertEquals([
-            ['id' => 1, 'name' => 'a'],
-            ['id' => 2, 'name' => 'b'],
-        ], Core::arrayDiffByKey([
+
+        $array = [
             ['id' => 1, 'name' => 'a'],
             ['id' => 2, 'name' => 'b'],
             ['id' => 3, 'name' => 'c'],
-        ], [
-            ['id' => 3, 'name' => 'cc'],
+        ];
+        $this->assertEquals([0 => $array[0], 2 => $array[2]], Core::arrayDiffByKey($array, [
+            ['id' => 2, 'name' => 'cc'],
+            ['id' => 4, 'name' => 'e'],
+        ], key: 'id'));
+    }
+
+    public function test_arrayIntersectByKey_works_properly(): void
+    {
+        $this->assertEquals([2 => 3], Core::arrayIntersectByKey([1, 2, 3], [3, 4], key: ''));
+
+        $array = [
+            ['id' => 1, 'name' => 'a'],
+            ['id' => 2, 'name' => 'b'],
+            ['id' => 3, 'name' => 'c'],
+        ];
+        $this->assertEquals([1 => $array[1]], Core::arrayIntersectByKey($array, [
+            ['id' => 2, 'name' => 'bb'],
             ['id' => 4, 'name' => 'e'],
         ], key: 'id'));
     }
