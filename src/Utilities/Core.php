@@ -3,6 +3,7 @@
 namespace Hoonam\Framework\Utilities;
 
 use Hoonam\Framework\Equatable;
+use Illuminate\Support\Arr;
 use UnitEnum;
 
 class Core
@@ -89,9 +90,8 @@ class Core
 
         if ($key === '') return $value;
 
-        if (is_string($key)) {
-            $nestedIndex = self::str_pos($key, '.', offset: 1);
-            if ($nestedIndex >= 0) return self::getValue(
+        if (is_string($key) && ($nestedIndex = self::str_pos($key, '.', offset: 1)) >= 0) {
+            return self::getValue(
                 self::getValue($value, substr($key, 0, $nestedIndex), $default),
                 substr($key, $nestedIndex + 1),
                 $default);
@@ -100,9 +100,14 @@ class Core
         $isFunc = is_string($key) && str_ends_with($key, '()');
         if ($isFunc) $key = rtrim($key, '()');
 
-        return is_array($value)
-            ? (isset($value[$key]) ? ($isFunc ? $value[$key]() : $value[$key]) : $default)
-            : (isset($value->{$key}) ? ($isFunc ? $value->{$key}() : $value->{$key}) : $default);
+        if (is_array($value) && array_key_exists($key, $value))
+            return $isFunc ? $value[$key]() : $value[$key];
+        else if (is_object($value) && property_exists($value, $key))
+            return $isFunc ? $value->{$key}() : $value->{$key};
+        else if (is_object($value) && method_exists($value, $key))
+            return $value->{$key}();
+
+        return $default;
     }
 
     public static function str_pos(string $haystack, string $needle, int $offset = 0): int
@@ -119,5 +124,16 @@ class Core
     public static function omitBlanks(array $array): array
     {
         return collect($array)->reject(fn ($item) => isBlank($item))->values()->all();
+    }
+
+    public static function arrayDiffByKey(array $array1, array $array2, mixed $key): array
+    {
+        $result = [];
+        $array2Coll = collect($array2);
+        foreach ($array1 as $k => $v) {
+            if ($array2Coll->contains(fn ($i) => getValue($i, $key) == $v)) continue;
+            $result[$k] = $v;
+        }
+        return $result;
     }
 }

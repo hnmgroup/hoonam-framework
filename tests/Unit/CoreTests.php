@@ -82,7 +82,7 @@ class CoreTests extends TestCase
             Core::mergeArraysByKey([1 => 10], [1 => 100], [1 => 1000]));
     }
 
-    public function test_getOrElse_works_properly(): void
+    public function test_getValue_works_properly(): void
     {
         $this->assertEquals(-1, Core::getValue(null, 'key', -1));
         $this->assertEquals(115, Core::getValue(['arrayKey' => 115], 'arrayKey'));
@@ -91,14 +91,37 @@ class CoreTests extends TestCase
         $this->assertEquals(150, Core::getValue(['func' => fn () => 150], 'func()'));
         $this->assertEquals(2, Core::getValue(['root' => ['level2' => [1,2,3]]], 'root.level2.1'));
         $this->assertEquals('fake', Core::getValue('fake', key: ''));
+        $this->assertEquals('100', Core::getValue(new FakeClass, 'getInt'));
     }
 
-    public function test_clean_works_properly(): void
+    public function test_omitNulls_works_properly(): void
     {
         $this->assertEquals([1,2], Core::omitNulls([1, null, 2]));
+    }
+
+    public function test_arrayDiffByKey_works_properly(): void
+    {
+        // a = 1,2
+        // b = 2,4
+        // updated = a intersect b
+        // new     = b diff a
+        // del     = a diff b
+        $this->assertEquals([1,2], Core::arrayDiffByKey([1, 2, 3], [3, 4], key: ''));
+        $this->assertEquals([
+            ['id' => 1, 'name' => 'a'],
+            ['id' => 2, 'name' => 'b'],
+        ], Core::arrayDiffByKey([
+            ['id' => 1, 'name' => 'a'],
+            ['id' => 2, 'name' => 'b'],
+            ['id' => 3, 'name' => 'c'],
+        ], [
+            ['id' => 3, 'name' => 'cc'],
+            ['id' => 4, 'name' => 'e'],
+        ], key: 'id'));
     }
 }
 
 enum FakeEnum { case A; case B; case C; }
 enum FakeIntBackedEnum: int { case A = 1; case B = 2; case C = 3; }
 enum FakeStrBackedEnum: string { case A = 'a'; case B = 'b'; case C = 'c'; }
+class FakeClass { public function getInt(): int { return 100; } }
