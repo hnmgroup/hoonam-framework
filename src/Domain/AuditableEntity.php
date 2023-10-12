@@ -25,7 +25,7 @@ abstract class AuditableEntity extends Entity
         parent::beforeCreating();
 
         $userId = $this->resolveUserId() ?? 0;
-        $now = Date::now();
+        $now = now();
         if ($this->isClean(static::CREATED_AT)) $this->setCreatedAt($now);
         if ($this->isClean(static::CREATED_BY)) $this->setCreatedBy($userId);
         if ($this->isClean(static::UPDATED_AT)) $this->setUpdatedAt($now);
@@ -37,7 +37,7 @@ abstract class AuditableEntity extends Entity
         parent::beforeUpdating();
 
         $userId = $this->resolveUserId() ?? 0;
-        $now = Date::now();
+        $now = now();
         if ($this->isClean(static::UPDATED_AT)) $this->setUpdatedAt($now);
         if ($this->isClean(static::UPDATED_BY)) $this->setUpdatedBy($userId);
     }
