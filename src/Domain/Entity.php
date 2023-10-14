@@ -2,8 +2,8 @@
 
 namespace Hoonam\Framework\Domain;
 
-use Exception;
 use Hoonam\Framework\Equatable;
+use Hoonam\Framework\NotSupportedException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -72,7 +72,7 @@ abstract class Entity extends Model implements Equatable
         else if ($relationship instanceof HasMany || $relationship instanceof BelongsToMany)
             $this->setRelation($key, $this->getLoadedRelationValue($key)->reject($entity));
         else
-            throw new Exception('relation type not supported: '.$key);
+            throw new NotSupportedException('relation type not supported: '.$key);
 
         if ($markAsDeleted) $this->addToDeletedRelationItems($key, $entity);
     }
