@@ -90,10 +90,13 @@ abstract class Entity extends Model implements Equatable
         if (!$this->save()) return false;
 
         foreach ($this->relations as $name => $models) {
+            /** @type Entity $model */
+
             $deleteModels = $this->deletedRelationItems[$name] ?? [];
-            foreach (array_filter($deleteModels) as $model) {
-                if (!$model->delete() === false) return false;
-                unset($this->deletedRelationItems[$model]);
+            foreach (array_filter($deleteModels) as $i => $model) {
+                if ($model->delete() === false) return false;
+                unset($deleteModels[$i]);
+                $this->deletedRelationItems[$name] = $deleteModels;
             }
 
             $models = array_filter($models instanceof DbCollection ? $models->all() : [$models]);
@@ -105,9 +108,9 @@ abstract class Entity extends Model implements Equatable
                 continue;
             }
 
-            /** @type Entity $model */
+            $isHasOneOrMany = $relationship instanceof HasOneOrMany;
             foreach ($models as $model) {
-                if ($relationship instanceof HasOneOrMany)
+                if ($isHasOneOrMany)
                     $model->setAttribute($relationship->getForeignKeyName(), $relationship->getParentKey());
 
                 if (!$model->push()) return false;
