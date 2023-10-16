@@ -3,6 +3,8 @@
 use Hoonam\Framework\Domain\ApplicationException;
 use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json};
 use Hoonam\Framework\NotImplementedException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
 function arrayToMap(array $array, mixed $key = null, string|callable|null $value = null): array
@@ -149,6 +151,11 @@ function arrayDiffByKey(array $array, array $array2, mixed $key): array
 function arrayIntersectByKey(array $array, array $array2, mixed $key): array
 {
     return Core::arrayIntersectByKey($array, $array2, $key);
+}
+
+function parseDate($time = null, $tz = null): Carbon
+{
+    return Date::parse($time, $tz);
 }
 
 /**
