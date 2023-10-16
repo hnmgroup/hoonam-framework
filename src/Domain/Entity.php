@@ -46,6 +46,11 @@ abstract class Entity extends Model implements Equatable
     {
     }
 
+    protected function initializeManyRelation(string $key): void
+    {
+        $this->setRelation($key, new DbCollection());
+    }
+
     protected function tryLoadRelation(string $key): void
     {
         if (!$this->relationLoaded($key) && ($this->$key() instanceof HasMany || $this->$key() instanceof BelongsToMany))
