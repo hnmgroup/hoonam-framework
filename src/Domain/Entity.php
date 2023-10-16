@@ -48,7 +48,8 @@ abstract class Entity extends Model implements Equatable
 
     protected function initializeManyRelation(string $key): void
     {
-        $this->setRelation($key, new DbCollection());
+        if (!$this->relationLoaded($key))
+            $this->setRelation($key, new DbCollection());
     }
 
     protected function tryLoadRelation(string $key): void
