@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Collection as DbCollection;
 
 abstract class Entity extends Model implements Equatable
 {
-    public function id(): ?int { return $this->getAttributeValue($this->primaryKey); }
-
     public $incrementing = true;
     protected $guarded = [];
     public $preventsLazyLoading = true;
@@ -25,6 +23,18 @@ abstract class Entity extends Model implements Equatable
     public static $snakeAttributes = false;
     public $timestamps = false;
     protected array $deletedRelationItems = [];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct(array_merge($this->getDefaults(), $attributes));
+    }
+
+    public function id(): ?int { return $this->getAttributeValue($this->primaryKey); }
+
+    protected function getDefaults(): array
+    {
+        return [];
+    }
 
     protected function beforeCreating(): void
     {
