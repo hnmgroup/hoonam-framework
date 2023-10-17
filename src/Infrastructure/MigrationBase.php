@@ -4,6 +4,7 @@ namespace Hoonam\Framework\Infrastructure;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ColumnDefinition;
 
 abstract class MigrationBase extends Migration
 {
@@ -46,9 +47,9 @@ abstract class MigrationBase extends Migration
     protected function audits(Blueprint $table): void
     {
         $table->dateTime('created_at')->nullable(false);
-        $table->bigInteger('created_by')->nullable(false);
+        $this->foreignId($table, column: 'created_by');
         $table->dateTime('updated_at')->nullable(false);
-        $table->bigInteger('updated_by')->nullable(false);
+        $this->foreignId($table, column: 'updated_by');
     }
 
     protected function timeInterval(Blueprint $table, string $prefix = '', bool $nullable = true): void
@@ -56,5 +57,20 @@ abstract class MigrationBase extends Migration
         if (!empty($prefix)) $prefix .= '_';
         $table->dateTime($prefix.'start')->nullable($nullable);
         $table->dateTime($prefix.'end')->nullable($nullable);
+    }
+
+    protected function stringAscii(Blueprint $table, string $name, ?int $length = null): ColumnDefinition
+    {
+        return $table->string($name, $length)->charset('ascii')->collation('ascii_general_ci');
+    }
+
+    protected function enum(Blueprint $table, string $name): ColumnDefinition
+    {
+        return $table->integer($name);
+    }
+
+    protected function stringEnum(Blueprint $table, string $name, ?int $length = 100): ColumnDefinition
+    {
+        return $this->stringAscii($table, $name, $length);
     }
 }
