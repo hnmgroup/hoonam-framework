@@ -6,8 +6,6 @@ use Hoonam\Framework\Equatable;
 use Hoonam\Framework\NotSupportedException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Collection as DbCollection;
 
@@ -22,7 +20,12 @@ abstract class Entity extends Model implements Equatable
     protected static $modelsShouldPreventAccessingMissingAttributes = true;
     public static $snakeAttributes = false;
     public $timestamps = false;
-    protected array $deletedRelationItems = [];
+    private array $deletedRelationItems = [];
+    private array $definedRelations = [
+        'has_one'         => [],
+        'has_many'        => [],
+        'belongs_to_many' => [],
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -56,19 +59,37 @@ abstract class Entity extends Model implements Equatable
     {
     }
 
-    protected function initializeManyRelation(string|array $key): void
+    protected function defineRelations(array $hasOne = [], array $hasMany = [], array $belongsToMany = []): void
     {
-        if (!is_array($key)) $key = [$key];
+        $this->definedRelations['has_one'] = $hasOne;
+        $this->definedRelations['has_many'] = $hasMany;
+        $this->definedRelations['belongs_to_many'] = $belongsToMany;
 
-        foreach ($key as $name) {
+        foreach ($hasMany as $name) {
+            if (!$this->relationLoaded($name))
+                $this->setRelation($name, new DbCollection());
+        }
+
+        foreach ($belongsToMany as $name) {
             if (!$this->relationLoaded($name))
                 $this->setRelation($name, new DbCollection());
         }
     }
 
+    private function isHasOneRelation(string $name): bool
+    {
+        return array_key_exists($name, $this->definedRelations['has_one']);
+    }
+
+    private function isHasManyOrBelongsToRelation(string $name): bool
+    {
+        return array_key_exists($name, $this->definedRelations['has_many'])
+            || array_key_exists($name, $this->definedRelations['belongs_to_many']);
+    }
+
     protected function tryLoadRelation(string $key): void
     {
-        if (!$this->relationLoaded($key) && ($this->$key() instanceof HasMany || $this->$key() instanceof BelongsToMany))
+        if (!$this->relationLoaded($key) && $this->isHasManyOrBelongsToRelation($key))
             $this->setRelation($key, new DbCollection());
     }
 
@@ -86,10 +107,9 @@ abstract class Entity extends Model implements Equatable
 
     protected function removeRelationItem(string $key, Entity $entity, bool $markAsDeleted = false): void
     {
-        $relationship = $this->$key();
-        if ($relationship instanceof HasOne)
+        if ($this->isHasOneRelation($key))
             $this->setRelation($key, null);
-        else if ($relationship instanceof HasMany || $relationship instanceof BelongsToMany)
+        else if ($this->isHasManyOrBelongsToRelation($key))
             $this->setRelation($key, $this->getLoadedRelationValue($key)->reject($entity));
         else
             throw new NotSupportedException('relation type not supported: '.$key);
