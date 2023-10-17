@@ -78,13 +78,13 @@ abstract class Entity extends Model implements Equatable
 
     private function isHasOneRelation(string $name): bool
     {
-        return array_key_exists($name, $this->definedRelations['has_one']);
+        return in_array($name, $this->definedRelations['has_one']);
     }
 
     private function isHasManyOrBelongsToRelation(string $name): bool
     {
-        return array_key_exists($name, $this->definedRelations['has_many'])
-            || array_key_exists($name, $this->definedRelations['belongs_to_many']);
+        return in_array($name, $this->definedRelations['has_many'])
+            || in_array($name, $this->definedRelations['belongs_to_many']);
     }
 
     protected function tryLoadRelation(string $key): void
