@@ -16,10 +16,14 @@ abstract class MigrationBase extends Migration
         Blueprint $table,
         ?string $tableName = null,
         ?string $column = null,
-        bool $nullable = false): void
+        bool $nullable = false,
+        bool $unique = false,
+        bool $index = false): void
     {
         $column ??= $tableName.'_id';
-        $table->unsignedBigInteger($column)->nullable($nullable);
+        $foreign = $table->unsignedBigInteger($column)->nullable($nullable);
+        if ($unique) $foreign = $foreign->unique();
+        if ($index) $foreign = $foreign->index();
     }
 
     protected function foreign(
