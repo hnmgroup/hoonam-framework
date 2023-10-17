@@ -15,7 +15,7 @@ abstract class MigrationBase extends Migration
         $table->bigInteger('updated_by')->nullable(false);
     }
 
-    public function createTimeIntervalColumn(Blueprint $table, string $name, bool $nullable): void
+    protected function createTimeIntervalColumn(Blueprint $table, string $name, bool $nullable): void
     {
         $table->dateTime($name.'_start')->nullable($nullable);
         $table->dateTime($name.'_end')->nullable($nullable);
