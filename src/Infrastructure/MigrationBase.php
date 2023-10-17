@@ -7,7 +7,29 @@ use Illuminate\Database\Schema\Blueprint;
 
 abstract class MigrationBase extends Migration
 {
-    protected function createAuditColumns(Blueprint $table): void
+    protected function id(Blueprint $table, bool $incrementing = true): void
+    {
+        $table->unsignedBigInteger('id', $incrementing)->nullable(false)->primary();
+    }
+
+    protected function foreignId(
+        Blueprint $table,
+        ?string $tableName = null,
+        ?string $column = null,
+        ?bool $nullable = false,
+        bool $cascadeOnDelete = false,
+        bool $nullOnDelete = false,
+        bool $restrictOnDelete = true): void
+    {
+        $column ??= $tableName.'_id';
+        $table->unsignedBigInteger($column)->nullable($nullable);
+        $foreign = $table->foreign($column)->references('id')->on($tableName);
+        if ($cascadeOnDelete) $foreign->cascadeOnDelete();
+        else if ($nullOnDelete) $foreign->nullOnDelete();
+        else if ($restrictOnDelete) $foreign->restrictOnDelete();
+    }
+
+    protected function auditColumns(Blueprint $table): void
     {
         $table->dateTime('created_at')->nullable(false);
         $table->bigInteger('created_by')->nullable(false);
@@ -15,7 +37,7 @@ abstract class MigrationBase extends Migration
         $table->bigInteger('updated_by')->nullable(false);
     }
 
-    protected function createTimeIntervalColumn(Blueprint $table, string $name, bool $nullable): void
+    protected function timeIntervalColumn(Blueprint $table, string $name, bool $nullable): void
     {
         $table->dateTime($name.'_start')->nullable($nullable);
         $table->dateTime($name.'_end')->nullable($nullable);
