@@ -47,9 +47,10 @@ abstract class MigrationBase extends Migration
         $table->bigInteger('updated_by')->nullable(false);
     }
 
-    protected function timeInterval(Blueprint $table, string $name, bool $nullable): void
+    protected function timeInterval(Blueprint $table, string $prefix = '', bool $nullable = true): void
     {
-        $table->dateTime($name.'_start')->nullable($nullable);
-        $table->dateTime($name.'_end')->nullable($nullable);
+        if (!empty($prefix)) $prefix .= '_';
+        $table->dateTime($prefix.'start')->nullable($nullable);
+        $table->dateTime($prefix.'end')->nullable($nullable);
     }
 }
