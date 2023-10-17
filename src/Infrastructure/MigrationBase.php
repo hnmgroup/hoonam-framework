@@ -29,7 +29,7 @@ abstract class MigrationBase extends Migration
         else if ($restrictOnDelete) $foreign->restrictOnDelete();
     }
 
-    protected function auditColumns(Blueprint $table): void
+    protected function audits(Blueprint $table): void
     {
         $table->dateTime('created_at')->nullable(false);
         $table->bigInteger('created_by')->nullable(false);
@@ -37,7 +37,7 @@ abstract class MigrationBase extends Migration
         $table->bigInteger('updated_by')->nullable(false);
     }
 
-    protected function timeIntervalColumn(Blueprint $table, string $name, bool $nullable): void
+    protected function timeInterval(Blueprint $table, string $name, bool $nullable): void
     {
         $table->dateTime($name.'_start')->nullable($nullable);
         $table->dateTime($name.'_end')->nullable($nullable);
