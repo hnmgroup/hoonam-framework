@@ -13,6 +13,16 @@ abstract class MigrationBase extends Migration
         $table->unsignedBigInteger('id', $incrementing)->nullable(false)->primary();
     }
 
+    protected function bigIncrementPrimary(Blueprint $table): void
+    {
+        $table->unsignedBigInteger('id', autoIncrement: true)->nullable(false)->primary();
+    }
+
+    protected function incrementPrimary(Blueprint $table): void
+    {
+        $table->unsignedInteger('id', autoIncrement: true)->nullable(false)->primary();
+    }
+
     protected function foreignId(
         Blueprint $table,
         ?string $tableName = null,
@@ -59,6 +69,12 @@ abstract class MigrationBase extends Migration
         $table->dateTime($prefix.'end')->nullable($nullable);
     }
 
+    protected function geoLocation(Blueprint $table, string $name, bool $nullable = true): void
+    {
+        $table->double($name.'_latitude', total: 11, places: 8)->nullable($nullable);
+        $table->double($name.'_longitude', total: 11, places: 8)->nullable($nullable);
+    }
+
     protected function stringAscii(Blueprint $table, string $name, ?int $length = null): ColumnDefinition
     {
         return $table->string($name, $length)->charset('ascii')->collation('ascii_general_ci');
@@ -72,21 +88,5 @@ abstract class MigrationBase extends Migration
     protected function stringEnum(Blueprint $table, string $name, ?int $length = 100): ColumnDefinition
     {
         return $this->stringAscii($table, $name, $length);
-    }
-
-    protected function bigIncrementPrimary(Blueprint $table): void
-    {
-        $table->unsignedBigInteger('id', autoIncrement: true)->nullable(false)->primary();
-    }
-
-    protected function incrementPrimary(Blueprint $table): void
-    {
-        $table->unsignedInteger('id', autoIncrement: true)->nullable(false)->primary();
-    }
-
-    protected function geoLocation(Blueprint $table, string $name, bool $nullable = true): void
-    {
-        $table->double($name.'_latitude', total: 11, places: 8)->nullable($nullable);
-        $table->double($name.'_longitude', total: 11, places: 8)->nullable($nullable);
     }
 }
