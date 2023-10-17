@@ -24,7 +24,7 @@ abstract class MigrationBase extends Migration
 
     protected function foreign(
         Blueprint $table,
-        ?string $tableName = null,
+        string $tableName,
         ?string $column = null,
         bool $nullable = false,
         bool $cascadeOnDelete = false,
