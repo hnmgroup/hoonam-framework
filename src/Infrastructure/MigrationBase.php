@@ -10,17 +10,18 @@ abstract class MigrationBase extends Migration
 {
     protected function id(Blueprint $table, bool $incrementing = true): void
     {
-        $table->unsignedBigInteger('id', $incrementing)->nullable(false)->primary();
+        $def = $table->unsignedBigInteger('id', $incrementing)->nullable(false);
+        if (!$incrementing) $def = $def->primary();
     }
 
     protected function bigIncrementPrimary(Blueprint $table): void
     {
-        $table->unsignedBigInteger('id', autoIncrement: true)->nullable(false)->primary();
+        $table->unsignedBigInteger('id', autoIncrement: true)->nullable(false)/*->primary()*/;
     }
 
     protected function incrementPrimary(Blueprint $table): void
     {
-        $table->unsignedInteger('id', autoIncrement: true)->nullable(false)->primary();
+        $table->unsignedInteger('id', autoIncrement: true)->nullable(false)/*->primary()*/;
     }
 
     protected function foreignId(
