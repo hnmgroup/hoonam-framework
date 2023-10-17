@@ -16,7 +16,7 @@ abstract class MigrationBase extends Migration
         Blueprint $table,
         ?string $tableName = null,
         ?string $column = null,
-        ?bool $nullable = false): void
+        bool $nullable = false): void
     {
         $column ??= $tableName.'_id';
         $table->unsignedBigInteger($column)->nullable($nullable);
@@ -26,7 +26,7 @@ abstract class MigrationBase extends Migration
         Blueprint $table,
         ?string $tableName = null,
         ?string $column = null,
-        ?bool $nullable = false,
+        bool $nullable = false,
         bool $cascadeOnDelete = false,
         bool $nullOnDelete = false,
         bool $restrictOnDelete = true): void
