@@ -73,4 +73,20 @@ abstract class MigrationBase extends Migration
     {
         return $this->stringAscii($table, $name, $length);
     }
+
+    protected function bigIncrementPrimary(Blueprint $table): void
+    {
+        $table->unsignedBigInteger('id', autoIncrement: true)->nullable(false)->primary();
+    }
+
+    protected function incrementPrimary(Blueprint $table): void
+    {
+        $table->unsignedInteger('id', autoIncrement: true)->nullable(false)->primary();
+    }
+
+    protected function geoLocation(Blueprint $table, string $name, bool $nullable = true): void
+    {
+        $table->double($name.'_latitude', total: 11, places: 8)->nullable($nullable);
+        $table->double($name.'_longitude', total: 11, places: 8)->nullable($nullable);
+    }
 }
