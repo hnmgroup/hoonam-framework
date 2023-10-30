@@ -75,10 +75,10 @@ class Convert
             throw new InvalidArgumentException('can not convert \''.$value.'\' to boolean');
         }
 
-        if ($trimValue !== 'true' && $trimValue !== 'false')
+        if ($trimValue !== 'true' && $trimValue !== 'false' && $trimValue !== '0' && $trimValue !== '1')
             throw new InvalidArgumentException('can not convert to boolean: \''.$value.'\'');
 
-        return $trimValue === 'true';
+        return $trimValue === 'true' || $trimValue === '1';
     }
 
     public static function toString(mixed $value): ?string

@@ -110,6 +110,10 @@ class ConvertTests extends TestCase
         $this->assertTrue(Convert::toBoolean('TRUE'));
         $this->assertTrue(Convert::toBoolean(' true'));
         $this->assertFalse(Convert::toBoolean('false '));
+        $this->assertTrue(Convert::toBoolean('1'));
+        $this->assertTrue(Convert::toBoolean(' 1 '));
+        $this->assertFalse(Convert::toBoolean('0'));
+        $this->assertFalse(Convert::toBoolean(' 0 '));
 
         $this->assertTrue(Convert::toBoolean(true));
         $this->assertFalse(Convert::toBoolean(false));
