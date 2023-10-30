@@ -1,11 +1,18 @@
 <?php
 
 use Hoonam\Framework\Domain\ApplicationException;
-use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json};
+use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json, URL};
 use Hoonam\Framework\NotImplementedException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
+
+const NOTHING = new stdClass;
+
+function isNothing(mixed $value): bool
+{
+    return $value === NOTHING;
+}
 
 function arrayToMap(array $array, mixed $key = null, string|callable|null $value = null): array
 {
@@ -17,9 +24,9 @@ function getValue(mixed $value, mixed $key, mixed $default = null): mixed
     return Core::getValue($value, $key, $default);
 }
 
-function str_pos(string $haystack, string $needle, int $offset = 0): int
+function strPosition(string $haystack, string $needle, int $offset = 0): int
 {
-    return Core::str_pos($haystack, $needle, $offset);
+    return Core::strPos($haystack, $needle, $offset);
 }
 
 function isPresent(mixed $value): bool
@@ -164,4 +171,17 @@ function parseDate($time = null, $tz = null): Carbon
 function notImplemented(?string $message = null): never
 {
     throw new NotImplementedException($message);
+}
+
+/**
+ * @param array{'schema'?: string, 'user'?: string, 'pass'?: string, 'host'?: string, 'port'?: int, 'path'?: string, 'query'?: array, 'fragment'?: string|array} $components
+ */
+function buildUrl(string $url, array $components): string
+{
+    return URL::build($url, $components);
+}
+
+function mapTo(mixed $value, callable $interceptor): mixed
+{
+    return $interceptor($value);
 }

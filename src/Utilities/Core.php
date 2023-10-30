@@ -90,7 +90,7 @@ class Core
 
         if ($key === '') return $value;
 
-        if (is_string($key) && ($nestedIndex = self::str_pos($key, '.', offset: 1)) >= 0) {
+        if (is_string($key) && ($nestedIndex = self::strPos($key, '.', offset: 1)) >= 0) {
             return self::getValue(
                 self::getValue($value, substr($key, 0, $nestedIndex), $default),
                 substr($key, $nestedIndex + 1),
@@ -110,7 +110,7 @@ class Core
         return $default;
     }
 
-    public static function str_pos(string $haystack, string $needle, int $offset = 0): int
+    public static function strPos(string $haystack, string $needle, int $offset = 0): int
     {
         $pos = strpos($haystack, $needle, $offset);
         return $pos === false ? -1 : $pos;

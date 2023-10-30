@@ -7,11 +7,24 @@ use PHPUnit\Framework\TestCase;
 
 class URLTests extends TestCase
 {
-    public function test_url_query_parameter_add_properly(): void
+    public function test_url_build_set_query_parameters_properly(): void
     {
-        $this::assertEquals('http://a.com?a=1', URL::appendParameter('http://a.com', 'a', '1'));
-        $this::assertEquals('http://a.com?a=1', URL::appendParameter('http://a.com?', 'a', '1'));
-        $this::assertEquals('http://a.com?b=&a=1', URL::appendParameter('http://a.com?b=', 'a', '1'));
-        $this::assertEquals('http://a.com?b=5&d=3&a=1', URL::appendParameter('http://a.com?b=5&d=3', 'a', '1'));
+        $this::assertEquals(
+            'http://example.com?sort=%2Bname',
+            URL::build('http://example.com?sort=id', ['query' => ['sort' => '+name']]),
+        );
+    }
+
+    public function test_url_build_set_fragment_properly(): void
+    {
+        $this::assertEquals(
+            'http://example.com#sort=%2Bname',
+            URL::build('http://example.com#sort=id', ['fragment' => ['sort' => '+name']]),
+        );
+
+        $this::assertEquals(
+            'http://example.com#sort=+name',
+            URL::build('http://example.com#sort=id', ['fragment' => 'sort=+name']),
+        );
     }
 }
