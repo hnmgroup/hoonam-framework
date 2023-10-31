@@ -59,6 +59,14 @@ abstract class Entity extends Model implements Equatable
     {
     }
 
+    protected function beforeSaving(): void
+    {
+    }
+
+    protected function afterSaved(): void
+    {
+    }
+
     protected function defineRelations(array $hasOne = [], array $hasMany = [], array $belongsToMany = []): void
     {
         $this->definedRelations['has_one'] = $hasOne;
@@ -168,6 +176,8 @@ abstract class Entity extends Model implements Equatable
         static::updating(fn (Entity $model) => $model->beforeUpdating());
         static::updated(fn (Entity $model) => $model->afterUpdated());
         static::deleted(fn (Entity $model) => $model->afterDeleted());
+        static::saving(fn (Entity $model) => $model->beforeSaving());
+        static::saved(fn (Entity $model) => $model->afterSaved());
     }
 
     public function equals(mixed $other): bool
