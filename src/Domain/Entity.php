@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
 use Illuminate\Database\Eloquent\Collection as DbCollection;
+use Illuminate\Support\Str;
 
 abstract class Entity extends Model implements Equatable
 {
@@ -185,5 +186,10 @@ abstract class Entity extends Model implements Equatable
         if (!($other instanceof Entity)) return false;
         if (!is_null($this->id()) && !is_null($other->id()) && $this->id() === $other->id()) return true;
         return $this === $other;
+    }
+
+    public function getTable(): string
+    {
+        return $this->table ?? Str::snake(class_basename($this));
     }
 }
