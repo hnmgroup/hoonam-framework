@@ -4,5 +4,5 @@ namespace Hoonam\Framework\WebApi;
 
 interface RouteProvider
 {
-    static function register(): void;
+    public static function register(): void;
 }

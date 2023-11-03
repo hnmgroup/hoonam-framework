@@ -6,5 +6,5 @@ use Illuminate\Contracts\Foundation\Application;
 
 interface ServiceProvider
 {
-    static function register(Application $app): void;
+    public static function register(Application $app): void;
 }

@@ -6,5 +6,5 @@ use Illuminate\Contracts\Foundation\Application;
 
 interface EventProvider
 {
-    static function register(Application $app): void;
+    public static function register(Application $app): void;
 }
