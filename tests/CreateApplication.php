@@ -9,7 +9,7 @@ trait CreateApplication
 {
     public function createApplication(): Application
     {
-        $app = require __DIR__ . '/bootstrap.php';
+        $app = require __DIR__.'/bootstrap.php';
 
         $app->make(Kernel::class)->bootstrap();
 
