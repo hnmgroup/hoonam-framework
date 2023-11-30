@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
 /** global types *************************/
-class_alias(DateTime::class, 'Date');
-class_alias(DateTime::class, 'Time');
+class_alias(Carbon::class, 'UtcDateTime');
+class_alias(Carbon::class, 'Date');
+class_alias(Carbon::class, 'Time');
 /*****************************************/
 
 const NOTHING = new stdClass;

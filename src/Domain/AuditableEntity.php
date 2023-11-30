@@ -2,8 +2,7 @@
 
 namespace Hoonam\Framework\Domain;
 
-use DateTime;
-use Illuminate\Support\Facades\Date;
+use UtcDateTime;
 use Hoonam\Framework\Application\UserIdentity;
 
 abstract class AuditableEntity extends Entity
@@ -11,14 +10,14 @@ abstract class AuditableEntity extends Entity
     public function createdBy(): int { return $this->getAttributeValue(static::CREATED_BY); }
     protected function setCreatedBy(int $value): void { $this->setAttribute(static::CREATED_BY, $value); }
 
-    public function createdAt(): DateTime { return Date::parse($this->getAttributeValue(static::CREATED_AT)); }
-    // public function setCreatedAt(DateTime $value): void { $this->setAttribute(static::CREATED_AT, $value); }
+    public function createdAt(): UtcDateTime { return parseDateTime($this->getAttributeValue(static::CREATED_AT)); }
+    // public function setCreatedAt(UtcDateTime $value): void { $this->setAttribute(static::CREATED_AT, $value); }
 
     public function updatedBy(): int { return $this->getAttributeValue(static::UPDATED_BY); }
     protected function setUpdatedBy(int $value): void { $this->setAttribute(static::UPDATED_BY, $value); }
 
-    public function updatedAt(): DateTime { return Date::parse($this->getAttributeValue(static::UPDATED_AT)); }
-    // public function setUpdatedAt(DateTime $value): void { $this->setAttribute(static::UPDATED_AT, $value); }
+    public function updatedAt(): UtcDateTime { return parseDateTime($this->getAttributeValue(static::UPDATED_AT)); }
+    // public function setUpdatedAt(UtcDateTime $value): void { $this->setAttribute(static::UPDATED_AT, $value); }
 
     protected function beforeCreating(): void
     {
