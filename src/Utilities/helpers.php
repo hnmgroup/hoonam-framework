@@ -7,6 +7,11 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
+/** global types *************************/
+class_alias(DateTime::class, 'Date');
+class_alias(DateTime::class, 'Time');
+/*****************************************/
+
 const NOTHING = new stdClass;
 
 function isNothing(mixed $value): bool
@@ -160,9 +165,19 @@ function arrayIntersectByKey(array $array, array $array2, mixed $key): array
     return Core::arrayIntersectByKey($array, $array2, $key);
 }
 
-function parseDate($time = null, $tz = null): Carbon
+function parseDateTime($dateTime = null, $tz = null): Carbon
 {
-    return Date::parse($time, $tz);
+    return Date::parse($dateTime, $tz);
+}
+
+function parseDate($date = null, $tz = null): Carbon
+{
+    return parseDateTime($date, $tz);
+}
+
+function parseTime($time = null): Carbon
+{
+    return parseDateTime($time);
 }
 
 /**
