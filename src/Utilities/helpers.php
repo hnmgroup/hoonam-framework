@@ -190,7 +190,16 @@ function notImplemented(?string $message = null): never
 }
 
 /**
- * @param array{'schema'?: string, 'user'?: string, 'pass'?: string, 'host'?: string, 'port'?: int, 'path'?: string, 'query'?: array, 'fragment'?: string|array} $components
+ * @param array{
+ *     schema?: string,
+ *     user?: string,
+ *     pass?: string,
+ *     host?: string,
+ *     port?: int,
+ *     path?: string,
+ *     query?: array,
+ *     fragment?: string|array
+ * } $components
  */
 function buildUrl(string $url, array $components): string
 {
