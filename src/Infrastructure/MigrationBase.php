@@ -81,9 +81,24 @@ abstract class MigrationBase extends Migration
         return $table->string($name, $length)->charset('ascii')->collation('ascii_general_ci');
     }
 
+    protected function stringUtf8mb3(Blueprint $table, string $name, ?int $length = null): ColumnDefinition
+    {
+        return $table->string($name, $length)->charset('utf8mb3')->collation('utf8mb3_general_ci');
+    }
+
     protected function enum(Blueprint $table, string $name): ColumnDefinition
     {
         return $table->integer($name);
+    }
+
+    protected function tinyEnum(Blueprint $table, string $name): ColumnDefinition
+    {
+        return $table->tinyInteger($name);
+    }
+
+    protected function smallEnum(Blueprint $table, string $name): ColumnDefinition
+    {
+        return $table->smallInteger($name);
     }
 
     protected function stringEnum(Blueprint $table, string $name, ?int $length = 100): ColumnDefinition
