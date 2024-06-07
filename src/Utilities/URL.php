@@ -27,13 +27,19 @@ class URL
     {
         $queryParams = [];
         mb_parse_str($query, $queryParams);
-
         $queryParams = array_merge($queryParams, $params);
 
-        return http_build_query(
-            $queryParams,
-            encoding_type: PHP_QUERY_RFC3986,
-        );
+        $entries = [];
+        foreach ($queryParams as $name => $value) {
+            if (is_null($value)) continue;
+
+            $hasName = is_string($name);
+            if ($hasName)
+                $entries[] = rawurlencode($name).'='.rawurlencode($value);
+            else
+                $entries[] = rawurlencode($value);
+        }
+        return join('&', $entries);
     }
 
     private static function buildFromComponents(array $components): string

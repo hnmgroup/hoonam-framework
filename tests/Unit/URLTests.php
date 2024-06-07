@@ -27,4 +27,20 @@ class URLTests extends TestCase
             URL::build('http://example.com#sort=id', ['fragment' => 'sort=+name']),
         );
     }
+
+    public function test_url_build_encodes_params_without_values(): void
+    {
+        $this::assertEquals(
+            'http://example.com?gray&sort=%2Bfirst%20name',
+            URL::build('http://example.com', ['query' => ['gray', 'sort' => '+first name']]),
+        );
+    }
+
+    public function test_url_build_ignore_params_with_null_values(): void
+    {
+        $this::assertEquals(
+            'http://example.com',
+            URL::build('http://example.com', ['query' => ['filter' => null]]),
+        );
+    }
 }
