@@ -178,7 +178,14 @@ function parseDate($date = null, $tz = null): Carbon
 
 function parseTime($time = null): Carbon
 {
-    return parseDateTime($time);
+    $date = parseDateTime($time);
+    return Carbon::create(
+        0, 1, 1,
+        $date->hour,
+        $date->minute,
+        $date->second,
+        'UTC',
+    )->setMicroseconds($date->microsecond);
 }
 
 /**
