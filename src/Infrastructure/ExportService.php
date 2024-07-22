@@ -20,6 +20,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use Hoonam\Framework\NotSupportedException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+/**
+ * @template TData
+ */
 abstract class ExportService
 {
     private array $data;
@@ -83,12 +86,14 @@ abstract class ExportService
         return getValue($this->fieldOption, $name.'.'.$option, $default);
     }
 
+    /** @param TData[] $data */
     public function setData(array $data): self
     {
         $this->data = Arr::map($data, fn ($row) => $this->map($row));
         return $this;
     }
 
+    /** @param TData $data */
     protected function map($data): array
     {
         return is_array($data) ? $data : (array)$data;
