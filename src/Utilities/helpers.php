@@ -85,9 +85,9 @@ function truncate(int|float $number): int
     return Math::truncate($number);
 }
 
-function valueOf(?string $str): ?string
+function trims(?string $str): ?string
 {
-    return Str::valueOf($str);
+    return Str::trim($str);
 }
 
 function isBlank(?string $str): bool

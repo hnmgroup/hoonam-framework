@@ -2,9 +2,8 @@
 
 namespace Hoonam\Framework\Utilities;
 
-use Hoonam\Framework\Equatable;
-use Illuminate\Support\Arr;
 use UnitEnum;
+use Hoonam\Framework\Equatable;
 
 class Core
 {

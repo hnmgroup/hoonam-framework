@@ -2,9 +2,6 @@
 
 namespace Hoonam\Framework\Application;
 
-use Hoonam\Framework\Utilities\Core;
-use Hoonam\Framework\Utilities\Str;
-
 trait CommandQueryUtils
 {
     /** @type ValidationException[] $_errors */
@@ -12,21 +9,13 @@ trait CommandQueryUtils
 
     public function sanitize(): void
     {
-        $this->sanitizeStrings();
     }
 
     public function validate(): void
     {
     }
 
-    protected final function sanitizeStrings(): void
-    {
-        Core::manipulate($this, function ($value) {
-            return is_string($value) ? Str::sanitizeText($value) : $value;
-        });
-    }
-
-    public final function addError(ValidationException $exception): void
+    final public function addError(ValidationException $exception): void
     {
         $this->_errors[] = $exception;
     }
@@ -34,11 +23,11 @@ trait CommandQueryUtils
     /**
      * @return ValidationException[]
      */
-    public final function errors(): array { return $this->_errors; }
+    final public function errors(): array { return $this->_errors; }
 
-    public final function hasError(): bool { return count($this->_errors) > 0; }
+    final public function hasError(): bool { return count($this->_errors) > 0; }
 
-    public final function throwValidationErrors(): void
+    final public function throwValidationErrors(): void
     {
         if (!$this->hasError()) return;
         $errors = $this->errors();

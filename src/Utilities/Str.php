@@ -6,7 +6,7 @@ use Illuminate\Support\Str as ILStr;
 
 class Str
 {
-    public static function valueOf(?string $str): ?string
+    public static function trim(?string $str): ?string
     {
         return self::nonBlank($str) ? trim($str) : null;
     }
@@ -47,30 +47,21 @@ class Str
     }
 
     /**
-     * converts persian, arabic native digits to latin numeric digits
-     * @param bool $arabicKafYa fix arabic letter kaf and ya
-     * @return string
+     * converts persian and arabic native digits to latin numeric digits
      */
-    public static function sanitizeText(string $text, bool $arabicKafYa = true): string
+    public static function sanitizeDigits(string $str): ?string
     {
-        if (self::isBlank($text)) return $text;
-
-        $len = mb_strlen($text);
-        $chars = [];
-        for ($i = 0; $i < $len; $i++) {
-            $char = mb_substr($text, $i, 1);
-            $code = mb_ord($char);
-            if ($code >= 1632 && $code <= 1641)
-                $chars[] = mb_chr($code - 1584);
-            else if ($code >= 1776 && $code <= 1785)
-                $chars[] = mb_chr($code - 1728);
-            else if ($arabicKafYa && $code == 1603)
-                $chars[] = mb_chr(1705);
-            else if ($arabicKafYa && $code == 1610)
-                $chars[] = mb_chr(1740);
-            else
-                $chars[] = $char;
-        }
-        return implode('', $chars);
+        if (self::isBlank($str)) return $str;
+        $NON_STANDARD_DIGITS_PATTERN = '/[\x{06F0}-\x{06F9}\x{0660}-\x{0669}]/u';
+        return preg_replace_callback(
+            $NON_STANDARD_DIGITS_PATTERN,
+            function ($match) {
+                $code = mb_ord($match[0]);
+                if ($code >= 0x06F0 && $code <= 0x06F9) return chr($code - 1728);
+                elseif ($code >= 0x0660 && $code <= 0x0669) return chr($code - 1584);
+                else return $match[0];
+            },
+            $str,
+        );
     }
 }

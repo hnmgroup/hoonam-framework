@@ -17,13 +17,13 @@ class StrTests extends TestCase
         $this::assertEquals(['1', '2'], Str::splitNonEmpty('1,2,', ','));
     }
 
-    public function test_valueOf_works_properly(): void
+    public function test_trim_works_properly(): void
     {
-        $this::assertEquals(null, Str::valueOf(null));
-        $this::assertEquals(null, Str::valueOf(''));
-        $this::assertEquals(null, Str::valueOf(' '));
-        $this::assertEquals('a', Str::valueOf(' a '));
-        $this::assertEquals('a', Str::valueOf('a'));
+        $this::assertEquals(null, Str::trim(null));
+        $this::assertEquals(null, Str::trim(''));
+        $this::assertEquals(null, Str::trim(' '));
+        $this::assertEquals('a', Str::trim(' a '));
+        $this::assertEquals('a', Str::trim('a'));
     }
 
     public function test_isBlank_works_properly(): void
@@ -62,13 +62,11 @@ class StrTests extends TestCase
         $this::assertTrue(Str::nonEmpty('a'));
     }
 
-    public function test_sanitizeText_convert_persian_numbers_properly(): void
+    public function test_sanitizeDigits_convert_persian_numbers_properly(): void
     {
-        $this::assertEquals('abc', Str::sanitizeText('abc'));
-        $this::assertEquals('0123456789', Str::sanitizeText('0123456789'));
-        $this::assertEquals('0123456789', Str::sanitizeText('٠١٢٣٤٥٦٧٨٩'));
-        $this::assertEquals('0123456789', Str::sanitizeText('۰۱۲۳۴۵۶۷۸۹'));
-        $this::assertEquals('ک', Str::sanitizeText('ك', arabicKafYa: true));
-        $this::assertEquals('ی', Str::sanitizeText('ي', arabicKafYa: true));
+        $this::assertEquals('abc', Str::sanitizeDigits('abc'));
+        $this::assertEquals('0123456789', Str::sanitizeDigits('0123456789'));
+        $this::assertEquals('0123456789', Str::sanitizeDigits('٠١٢٣٤٥٦٧٨٩'));
+        $this::assertEquals('0123456789', Str::sanitizeDigits('۰۱۲۳۴۵۶۷۸۹'));
     }
 }
