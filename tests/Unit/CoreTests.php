@@ -2,9 +2,10 @@
 
 namespace Tests\Unit;
 
+use stdClass;
+use Stringable;
 use Hoonam\Framework\Utilities\Core;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class CoreTests extends TestCase
 {
@@ -128,9 +129,26 @@ class CoreTests extends TestCase
             ['id' => 4, 'name' => 'e'],
         ], key: 'id'));
     }
+
+    public function test_toString(): void
+    {
+        $this->assertEquals('22:10:20.333456', toString(parseTime('22:10:20.333456')));
+        $this->assertEquals('C', toString(FakeEnum::C));
+        $this->assertEquals('B', toString(FakeIntBackedEnum::B));
+        $this->assertEquals('A', toString(FakeStrBackedEnum::A));
+        $this->assertEquals('FAKE_CLASS', toString(new FakeClass()));
+    }
 }
 
 enum FakeEnum { case A; case B; case C; }
 enum FakeIntBackedEnum: int { case A = 1; case B = 2; case C = 3; }
 enum FakeStrBackedEnum: string { case A = 'a'; case B = 'b'; case C = 'c'; }
-class FakeClass { public function getInt(): int { return 100; } }
+class FakeClass implements Stringable
+{
+    public function getInt(): int { return 100; }
+
+    public function __toString()
+    {
+        return 'FAKE_CLASS';
+    }
+}

@@ -4,6 +4,7 @@ use Hoonam\Framework\Domain\ApplicationException;
 use Hoonam\Framework\Utilities\{Core, Convert, Math, Str, Web, Json, URL};
 use Hoonam\Framework\NotImplementedException;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 
@@ -173,7 +174,14 @@ function parseDateTime($dateTime = null, $tz = null): Carbon
 
 function parseDate($date = null, $tz = null): Carbon
 {
-    return parseDateTime($date, $tz);
+    $date = parseDateTime($date, $tz);
+    return Carbon::create(
+        $date->year,
+        $date->month,
+        $date->day,
+        0, 0, 0,
+        $date->tz,
+    )->setMicroseconds(0);
 }
 
 function parseTime($time = null): Carbon
@@ -216,4 +224,41 @@ function buildUrl(string $url, array $components): string
 function mapTo(mixed $value, callable $interceptor): mixed
 {
     return $interceptor($value);
+}
+
+function is_enum(mixed $value): bool
+{
+    return Core::isEnum($value);
+}
+
+function is_date_time(mixed $value): bool
+{
+    return $value instanceof Carbon;
+}
+
+function is_date(mixed $value): bool
+{
+    return $value instanceof Carbon &&
+        $value->hour == 0 && $value->minute == 0 && $value->second == 0 && $value->microsecond == 0;
+}
+
+function is_time(mixed $value): bool
+{
+    return $value instanceof Carbon &&
+        $value->year == 0 && $value->month == 1 && $value->day == 1;
+}
+
+function is_enumerable(mixed $value): bool
+{
+    return $value instanceof Enumerable;
+}
+
+/**
+ * @template T
+ * @param class-string<T> $type
+ * @return T
+ */
+function cast(mixed $value, string $type)
+{
+    return $value;
 }

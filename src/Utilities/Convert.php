@@ -2,6 +2,8 @@
 
 namespace Hoonam\Framework\Utilities;
 
+use UnitEnum;
+use DateTimeInterface;
 use InvalidArgumentException;
 
 class Convert
@@ -84,9 +86,11 @@ class Convert
     public static function toString(mixed $value): ?string
     {
         if (is_null($value)) return null;
-
+        if (is_enum($value)) return cast($value, UnitEnum::class)->name;
         if (is_bool($value)) return $value ? 'true' : 'false';
-
+        if (is_time($value)) return cast($value, DateTimeInterface::class)->format('H:i:s.u');
+        if (is_date($value)) return cast($value, DateTimeInterface::class)->format('Y-m-d');
+        if (is_date_time($value)) return cast($value, DateTimeInterface::class)->format('Y-m-d\TH:i:s.up');
         return strval($value);
     }
 }
