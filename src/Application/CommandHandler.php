@@ -3,8 +3,8 @@
 namespace Hoonam\Framework\Application;
 
 /**
- * @template TCommand of Command<TResponse>
  * @template TResponse
+ * @template TCommand of Command<TResponse>
  */
 interface CommandHandler
 {

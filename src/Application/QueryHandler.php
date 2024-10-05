@@ -3,8 +3,8 @@
 namespace Hoonam\Framework\Application;
 
 /**
- * @template TQuery of Query<TResult>
  * @template TResult
+ * @template TQuery of Query<TResult>
  */
 interface QueryHandler
 {
