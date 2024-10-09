@@ -12,7 +12,7 @@ readonly class GeoLocation implements Equatable
 
     public function toString(): string
     {
-        return $this->latitude . ',' . $this->latitude;
+        return $this->latitude . ',' . $this->longitude;
     }
 
     public static function parse(string $value): GeoLocation
