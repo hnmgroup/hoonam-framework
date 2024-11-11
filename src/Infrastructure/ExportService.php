@@ -73,10 +73,10 @@ abstract class ExportService
 
     private function formatDateTime(Carbon $value, string $format, ?string $locale): string
     {
-        $locale ??= 'en';
+        $locale ??= 'en-US';
         return match ($locale) {
-            'en'    => $value->format($format),
-            'fa'    => Jalalian::fromCarbon($value)->format($format),
+            'en-US', 'en' => $value->format($format),
+            'fa-IR', 'fa' => Jalalian::fromCarbon($value)->format($format),
             default => throw new NotSupportedException("locale '$locale' not supported")
         };
     }
