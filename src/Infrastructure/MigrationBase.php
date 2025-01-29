@@ -72,8 +72,8 @@ abstract class MigrationBase extends Migration
 
     protected function geoLocation(Blueprint $table, string $name, bool $nullable = true): void
     {
-        $table->double($name.'_latitude', total: 11, places: 8)->nullable($nullable);
-        $table->double($name.'_longitude', total: 11, places: 8)->nullable($nullable);
+        $table->double($name.'_latitude', total: 17, places: 14)->nullable($nullable);
+        $table->double($name.'_longitude', total: 17, places: 14)->nullable($nullable);
     }
 
     protected function stringAscii(Blueprint $table, string $name, ?int $length = null): ColumnDefinition
